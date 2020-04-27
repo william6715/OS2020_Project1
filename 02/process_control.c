@@ -65,6 +65,7 @@ pid_t process_create(Process chld){
             chld.exec_time--;
         }
         end = syscall(SYS_GETTIME);
+        printf("pid %d\n", getpid());
         syscall(SYS_PRINT, getpid() , start, end);
         exit(0);
     }
