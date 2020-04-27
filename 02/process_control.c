@@ -65,7 +65,7 @@ pid_t process_create(Process chld){
             chld.exec_time--;
         }
         end = syscall(SYS_GETTIME);
-        syscall(SYS_PRINT, chpid, start, end);
+        syscall(SYS_PRINT, getpid() , start, end);
         exit(0);
     }
     //parent will do init, child will do in final
