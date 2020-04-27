@@ -27,7 +27,6 @@ void inline TIME_UNIT(void){
     return;
 }
 
-/* this function makes pid only run on core */
 int assign_core(pid_t pid, int core){
     cpu_set_t cpu_mask;
 
