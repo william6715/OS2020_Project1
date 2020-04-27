@@ -41,13 +41,14 @@ int assign_core(pid_t pid, int core){
     return 0;
 }
 
-// create the process and pause
+// parent create the process and pause it
 pid_t process_create(Process chld){
     pid_t chpid = fork();
     if ( chpid < 0 ){
         perror("error: fork");
         exit(2);
     }
+    //fork can inherit pointer copy
     if ( chpid == 0 ){ 
         close( chld.pipe_fd[1] );
         int init_exec_time = chld.exec_time;
@@ -67,14 +68,14 @@ pid_t process_create(Process chld){
         syscall(SYS_PRINT, chpid, start, end);
         exit(0);
     }
-
+    //parent will do init, child will do in final
     process_kickout(chpid);
     assign_core(chpid, CHILD_CORE);
     close( chld.pipe_fd[0] );
     return chpid;
 }
 
-/* this function sets pid to the lowest prioity possible */
+// set pid to lower priority 
 int process_kickout(pid_t pid){
     struct sched_param param;
     // normal policy only can use 0
@@ -91,14 +92,13 @@ int process_kickout(pid_t pid){
 // or set to real policy
 int process_resume(pid_t pid){
     struct sched_param param;
-    param.sched_priority = 0;
-    //param.sched_priority = sched_get_priority_max(SCHED_FIFO);
+    //param.sched_priority = 0;
+    param.sched_priority = sched_get_priority_max(SCHED_FIFO);
     //RR time sharing
-    if ( sched_setscheduler(pid, SCHED_OTHER, &param) < 0 ){
-    //if ( sched_setscheduler(pid, SCHED_FIFO, &param) < 0 ){
+    //if ( sched_setscheduler(pid, SCHED_OTHER, &param) < 0 ){
+    if ( sched_setscheduler(pid, SCHED_FIFO, &param) < 0 ){
         perror("error: sched_setscheduler");
         return -1;
     }
-
     return 0;
 }

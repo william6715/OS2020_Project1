@@ -12,19 +12,17 @@ typedef struct{
     int pipe_fd[2];
 }Process;
 
-// defines one unit of time
-// one time unit is the time to run this function once
-void inline TIME_UNIT(void);
 
+void inline TIME_UNIT(void);
 int assign_core(pid_t pid, int core);
 
-// spawn new process when ready_time is reached
+// create the process and pause
 pid_t process_create(Process chld);
 
-// kick child out of core
+// make priority to low
 int process_kickout(pid_t pid);
 
-// bring another child to run
+// make priority to high
 int process_resume(pid_t pid);
 
 #endif
