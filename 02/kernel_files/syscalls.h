@@ -940,5 +940,6 @@ asmlinkage long sys_pkey_alloc(unsigned long flags, unsigned long init_val);
 asmlinkage long sys_pkey_free(int pkey);
 asmlinkage long sys_statx(int dfd, const char __user *path, unsigned flags,
 			  unsigned mask, struct statx __user *buffer);
-asmlinkage long sys_printdmesg(int len, char __user * src);
+asmlinkage long sys_gettime(void);
+asmlinkage void sys_pj1_print(int pid, long start_time, long end_time);
 #endif
