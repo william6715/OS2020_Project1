@@ -13,20 +13,16 @@
 #include "process_control.h"
 #include "scheduler.h"
 
-#define SYS_PRINT_STR 333
+#define SYS_GETTIME 333
+#define SYS_PRINT 334
+
 
 typedef struct sched_param Sched_pm;
 typedef struct timespec Time_sp;
 
-/* one time unit = the time it takes 
-   to run this functio once */
+
 void inline TIME_UNIT(void){
-    /* volatile means treat the variable
-       as if it may changes without the 
-       compiler knowing it */
     volatile unsigned long i;
-    /* loop one million times to kill time
-       UL means unsigned long */
     for(i = 0; i < 1000000UL; i++);
     return;
 }
@@ -63,7 +59,7 @@ pid_t proc_create(Process chld){
         perror("error: fork");
         exit(2);
     }
-    if ( chpid == 0 ){ // emulate child processes
+    if ( chpid == 0 ){ 
         /* close the pipe write file descriptor for the child */
         close( chld.pipe_fd[1] );
         
@@ -71,9 +67,7 @@ pid_t proc_create(Process chld){
         int init_exec_time = chld.exec_time;
 
         /* declare two time structs */
-        Time_sp start, end;
-        /* system message buffer */
-        char dmesg[256] = "";
+        long start, end;
 
         /* loop if there's time left */
         while( chld.exec_time > 0 ){
@@ -86,10 +80,7 @@ pid_t proc_create(Process chld){
             /* if it is the first time being run */
             if( chld.exec_time == init_exec_time ){
                 /* get the system time */
-                if( clock_gettime(CLOCK_REALTIME, &start) == -1 ){
-                    perror("error: clock_gettime");
-                    exit(3);
-                }
+                start = syscall(SYS_GETTIME);
                 /* print out child name and its pid */
                 printf("%s %d\n", chld.name, getpid());
             }
@@ -100,17 +91,9 @@ pid_t proc_create(Process chld){
             chld.exec_time--;
         }
         /* get system time, when the while loop finishes */
-        if( clock_gettime(CLOCK_REALTIME, &end) == -1 ){
-            perror("error: clock_gettime");
-            exit(3);
-        }
-
-        /* place pid, start and end time into a char buffer 'dmesg' */
-        sprintf(dmesg, "[Project1] %d %09lu.%09lu %09lu.%09lu\n",
-                getpid(), start.tv_sec, start.tv_nsec, end.tv_sec, end.tv_nsec);
-
+        end = syscall(SYS_GETTIME);
         /* use a self defined system call to write dmesg */
-        syscall(SYS_PRINT_STR, strlen(dmesg)+1, dmesg);
+        syscall(SYS_PRINT, pid, start, end);
         /* child process exits */
         exit(0);
     }
