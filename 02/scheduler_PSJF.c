@@ -55,9 +55,9 @@ int scheduler_PSJF(Process *proc, int N_procs){
 				fflush(fp);
 #endif
                 /* create the process */
-				pid_t chpid = proc_create(proc[target]);
+				pid_t chpid = process_create(proc[target]);
                 /* raise its priority group */
-				proc_resume( chpid );
+				process_resume( chpid );
 
                 /* set pid */
 				proc[target].pid = chpid;
@@ -75,7 +75,7 @@ int scheduler_PSJF(Process *proc, int N_procs){
 #endif
 				
                 /* simply raise its priority group */
-				proc_resume( proc[target].pid );
+				process_resume( proc[target].pid );
 			}
             /* record the index of the process to be run 
                variable 'last_turn' is only used for logging information*/
@@ -93,7 +93,7 @@ int scheduler_PSJF(Process *proc, int N_procs){
             /* decrement its execution time */
 			proc[target].exec_time--;		
             /* lower its priority group */
-			proc_kickout( proc[target].pid );
+			process_kickout( proc[target].pid );
 			
             /* if the process finishes execution */
 			if (proc[target].exec_time == 0){		

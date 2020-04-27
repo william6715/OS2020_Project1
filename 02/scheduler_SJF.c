@@ -56,9 +56,9 @@ int scheduler_SJF(Process *proc, int N_procs){
 #endif
 
             /* create process for the shortest job */
-			pid_t chpid = proc_create(proc[target]);
+			pid_t chpid = process_create(proc[target]);
             /* raise its priority group */
-			proc_resume( chpid );
+			process_resume( chpid );
             /* set its process id */
 			proc[target].pid = chpid;
 

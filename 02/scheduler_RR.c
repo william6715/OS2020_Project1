@@ -47,12 +47,12 @@ int scheduler_RR(Process *proc, int N_procs){
             /* if the process has been created */
 			if( proc[i].pid > 0 ){
                 /* resume the process (raise priority group to OTHER) */
-				proc_resume( proc[i].pid );
+				process_resume( proc[i].pid );
 			}else{ // if process hasn't been created
                 /* create the process */
-				proc[i].pid = proc_create( proc[i] );
+				proc[i].pid = process_create( proc[i] );
                 /* raise the priority group */
-				proc_resume( proc[i].pid );
+				process_resume( proc[i].pid );
 			}
 
 			// run an RR round, originally set to 500 time units
@@ -81,7 +81,7 @@ int scheduler_RR(Process *proc, int N_procs){
             /* if the process have not yet finished (time slice used up) */
 			}else{
                 /* lower its priority */
-				proc_kickout( proc[i].pid );				
+				process_kickout( proc[i].pid );				
 			}
 
 		} /* for loop ends here */

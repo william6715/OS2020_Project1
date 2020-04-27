@@ -19,12 +19,12 @@ void inline TIME_UNIT(void);
 int assign_core(pid_t pid, int core);
 
 // spawn new process when ready_time is reached
-pid_t proc_create(Process chld);
+pid_t process_create(Process chld);
 
 // kick child out of core
-int proc_kickout(pid_t pid);
+int process_kickout(pid_t pid);
 
 // bring another child to run
-int proc_resume(pid_t pid);
+int process_resume(pid_t pid);
 
 #endif
