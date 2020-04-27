@@ -29,14 +29,10 @@ void inline TIME_UNIT(void){
 
 int assign_core(pid_t pid, int core){
     cpu_set_t cpu_mask;
-
-    /* it's an error if core is greater than 
-       the number of cpus permitted by the system */
     if (core > sizeof(cpu_mask)){
         fprintf(stderr, "Invalid Core No.: %d\n", core);
         return -1;
     }
-
     /* clear cpu_mask */
     CPU_ZERO(&cpu_mask);
     /* set the flag on cpu */
