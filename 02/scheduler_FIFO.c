@@ -33,9 +33,9 @@ int scheduler_FIFO(Process *proc, int N_procs){
            in the 'read' system call, also child is
            assigned to cpu 3, and its priority is set
            very low */
-		pid_t chpid = proc_create(proc[cur]);
+		pid_t chpid = process_create(proc[cur]);
         /* set child process priority to group OTHER */
-		proc_resume( chpid );
+		process_resume( chpid );
         /* keep looping if the execution time is positive */
 		while( proc[cur].exec_time > 0 ){
 			// tell process to run 1 time unit
