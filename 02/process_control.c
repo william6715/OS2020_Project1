@@ -41,7 +41,7 @@ int assign_core(pid_t pid, int core){
     return 0;
 }
 
-/* function used to create and run child process */
+// create the process and pause
 pid_t process_create(Process chld){
     pid_t chpid = fork();
     if ( chpid < 0 ){
@@ -64,7 +64,7 @@ pid_t process_create(Process chld){
             chld.exec_time--;
         }
         end = syscall(SYS_GETTIME);
-        syscall(SYS_PRINT, pid, start, end);
+        syscall(SYS_PRINT, chpid, start, end);
         exit(0);
     }
 
