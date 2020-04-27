@@ -15,7 +15,7 @@ int main(){
 	Process* proc = malloc(n * sizeof(Process));
 	//it will be sort by ready time already
 	for(int i = 0 ; i < n ; i++){
-        /* assign tmp to each 'Process' */
+        // assign tmp to each 'Process' 
 		Process *tmp = (proc + i);
 		scanf("%s %d %d", tmp -> name, &(tmp -> ready_time), &(tmp -> exec_time));
 		tmp -> pid = -1; 
@@ -25,7 +25,8 @@ int main(){
 		}
 	}
 
-    /* assign the main process to cpu 2 */
+    // assign the main process to cpu 2 
+	// my virtual box have 4 cpu
 	assign_core(getpid(), SCHED_CORE);
 	
 	if(strcmp(SP, "FIFO") == 0) scheduler_FIFO(proc, n);

@@ -3,14 +3,9 @@
 
 #include <sys/types.h>
 
-/*
-define a structure called 'Process'
-contains its name(char array), ready time, 
-execution time, process id, and 
-two file descriptors used by pipes
-*/
+
 typedef struct{
-    char name[32];
+    char name[16];
     int ready_time;
     int exec_time;
     pid_t pid;

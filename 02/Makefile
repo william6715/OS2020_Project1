@@ -7,8 +7,8 @@ all:
 	gcc $(CFLAG) scheduler_SJF.c -c
 	gcc $(CFLAG) scheduler_PSJF.c -c
 	gcc $(CFLAG) process_control.c -c
-	gcc main.o scheduler_FIFO.o scheduler_RR.o scheduler_SJF.o scheduler_PSJF.o process_control.o -o OS_Proj1
+	gcc main.o scheduler_FIFO.o scheduler_RR.o scheduler_SJF.o scheduler_PSJF.o process_control.o -o 2020OS_Project1
 
 clean:
-	rm -f *.o OS_Proj1
+	rm -f *.o 2020OS_Project1
 
