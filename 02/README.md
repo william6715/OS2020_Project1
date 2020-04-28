@@ -11,4 +11,4 @@
 * syscall 334: print dmesg
 
 ## III. Important
-* I use 4 core CPU, for this project, you need at least 3 CPU
+* I use 4 core CPU, for this project, you need at least 4 CPU
