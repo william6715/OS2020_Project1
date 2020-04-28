@@ -33,7 +33,7 @@ int scheduler_SJF(Process *proc, int N_procs){
 			process_resume( chpid );
 			//run
 			while (proc[target].exec_time > 0){
-				write(proc[cur].pipe_fd[1], "run", strlen("run"));
+				write(proc[target].pipe_fd[1], "run", strlen("run"));
 				TIME_UNIT();
 				++time;
 				proc[target].exec_time--;
