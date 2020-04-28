@@ -19,7 +19,7 @@ int main(){
 		scanf("%s %d %d", process[i].name, &(process[i].ready_time), &(process[i].exec_time));
 		process[i].pid = -1; 
 		if(pipe((process[i].pipe_fd)) < 0){
-			perror("error: pipe");
+			perror("error: pipe can't set up");
 			exit(1);
 		}
 	}

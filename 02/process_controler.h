@@ -12,8 +12,8 @@ typedef struct{
     int pipe_fd[2];
 }Process;
 
-
 void inline TIME_UNIT(void);
+
 int assign_core(pid_t pid, int core);
 
 // create the process and pause
