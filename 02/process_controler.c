@@ -26,7 +26,7 @@ void inline TIME_UNIT(void){
 int assign_core(pid_t pid, int core){
     cpu_set_t cpu_mask;
     if (core > sizeof(cpu_mask)){
-        fprintf(stderr, "Core Number %d is bigger than the number of core %llu you have\n", core, sizeof(cpu_mask));
+        fprintf(stderr, "Core Number %d is bigger than the number of core %lu you have\n", core, sizeof(cpu_mask));
         return -1;
     }
     CPU_ZERO(&cpu_mask);
