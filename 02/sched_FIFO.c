@@ -11,7 +11,7 @@
 int scheduler_FIFO(Process *proc, int N_procs){
 	//initial
 	int cur = -1;
-	int time=0;
+	int time = 0;
 	while(1){
 		cur += 1;
 		if( cur >= N_procs ) break;

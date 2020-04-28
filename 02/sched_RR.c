@@ -9,13 +9,9 @@
 #include "scheduler.h"
 #include "process_controler.h"
 
-/* Round-robin scheduler */
 int scheduler_RR(Process *proc, int N_procs){
-
-	// pid_t chpids[N_procs] = {0};
-
-	int N_fin = 0; //number of finished processes
-	int cur_t = 0; //current time
+	int finish = 0; 
+	int time = 0; 
 
 	while(1){
 
@@ -27,7 +23,7 @@ int scheduler_RR(Process *proc, int N_procs){
 
             /* if the current time is less than the 
                current process's ready time */
-			if( cur_t < proc[i].ready_time ){
+			if( time < proc[i].ready_time ){
                 /* update the closest ready time if necessary */
 				if( proc[i].ready_time < next_ex_t ) next_ex_t = proc[i].ready_time;
                 /* also increment the number of processes not allowed to be executed */
@@ -64,7 +60,7 @@ int scheduler_RR(Process *proc, int N_procs){
                    and increment current time */
 				kt --;
 				proc[i].exec_time --;
-				cur_t ++;
+				time ++;
 			}
 
 			// if process finished
@@ -77,7 +73,7 @@ int scheduler_RR(Process *proc, int N_procs){
 					return 1;
 				}
                 /* increment number of process finished */
-				N_fin ++;
+				finish ++;
             /* if the process have not yet finished (time slice used up) */
 			}else{
                 /* lower its priority */
@@ -87,14 +83,14 @@ int scheduler_RR(Process *proc, int N_procs){
 		} /* for loop ends here */
 
         /* number of finished process >= number of processes */
-		if( N_fin >= N_procs ) break;
+		if( finish >= N_procs ) break;
 
         /* number of processes that can not run >= number of processes */
 		if( nt >= N_procs){ // run itself when not finished and no process can be executed
             /* loop until a process is ready */
-			while( cur_t < next_ex_t ){ //until at least a process is ready
+			while( time < next_ex_t ){ //until at least a process is ready
 				TIME_UNIT();
-				cur_t ++;
+				time ++;
 			}
 		}
 	}

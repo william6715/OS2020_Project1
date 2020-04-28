@@ -7,22 +7,19 @@
 #include <sys/wait.h>
 #include <sys/syscall.h>
 
+#include "scheduler.h"
 #include "process_controler.h"
 
-/* preemptive version of the find shortest function
-   it's actually the same function, but it is used
-   differently than in the SJF scheduler */
-int preemptive_find_shortest(Process *proc, int N_procs, int time){
-	int shortest = -1, excute_time = INT_MAX;
 
-    /* loop through each process */
+int find_shortest(Process *proc, int N_procs, int time){
+	int shortest = -1, 
+	int min_time = INT_MAX;
 	for (int i = 0; i < N_procs; i++){
-		if (proc[i].ready_time <= time && proc[i].exec_time && proc[i].exec_time < excute_time){
-			excute_time = proc[i].exec_time;
+		if (proc[i].ready_time <= time && proc[i].exec_time && proc[i].exec_time < min_time){
+			min_time = proc[i].exec_time;
 			shortest = i;
 		}
 	}
-
 	return shortest;
 }
 
@@ -34,26 +31,15 @@ int scheduler_PSJF(Process *proc, int N_procs){
 	int finish = 0, started[N_procs];
     /* initialize started with 0s */
 	memset(started, 0, sizeof(started));
-
-#ifdef PRINT_LOG
-	FILE *fp = fopen("./scheduler_log/PSJF_5.out", "wb");
-	char mesg[256] = "";
-#endif
-	
     /* keep looping while there're still unfinished processes */
 	while (finish < N_procs){
         /* target = index of the shortest job runnable  */
-		int target = preemptive_find_shortest(proc, N_procs, time);
+		int target = find_shortest(proc, N_procs, time);
 		
         /* if such a job exists */
 		if (target != -1){
             /* if target has not been created yet */
 			if (started[target] == 0){
-#ifdef PRINT_LOG
-				sprintf(mesg, "process %s, start at %d\n", proc[target].name, time);
-				fprintf(fp, "%s", mesg);
-				fflush(fp);
-#endif
                 /* create the process */
 				pid_t chpid = process_create(proc[target]);
                 /* raise its priority group */
@@ -65,15 +51,7 @@ int scheduler_PSJF(Process *proc, int N_procs){
 				started[target] = 1;
 			}
             /* target has been created in a previous iteration */
-			else {
-#ifdef PRINT_LOG
-				if (last_turn != target){										
-					sprintf(mesg, "process %s, resume at %d\n", proc[target].name, time);
-					fprintf(fp, "%s", mesg);
-					fflush(fp);
-				}
-#endif
-				
+			else {				
                 /* simply raise its priority group */
 				process_resume( proc[target].pid );
 			}
@@ -108,11 +86,6 @@ int scheduler_PSJF(Process *proc, int N_procs){
 
                 /* increment number of finished processes */
 				finish++;
-#ifdef PRINT_LOG
-				sprintf(mesg, "process %s, end at %d\n", proc[target].name, time);
-				fprintf(fp, "%s", mesg);
-				fflush(fp);
-#endif
 			}
 		}		
         /* if we can't find a process that's able to run right now */
@@ -123,10 +96,5 @@ int scheduler_PSJF(Process *proc, int N_procs){
 			time++;
 		}
 	}
-
-#ifdef PRINT_LOG
-	fclose(fp);
-#endif
-
 	return 0;
 }
