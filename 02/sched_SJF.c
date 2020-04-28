@@ -14,7 +14,7 @@ int find_shortest(Process *proc, int N_procs, int time){
 	int min_time = INT_MAX;
 	for (int i = 0; i < N_procs; i++){
 		if (proc[i].ready_time <= time && proc[i].exec_time && proc[i].exec_time < min_time){
-			excute_time = proc[i].exec_time;
+			min_time = proc[i].exec_time;
 			shortest = i;
 		}
 	}
