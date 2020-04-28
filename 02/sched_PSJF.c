@@ -52,7 +52,7 @@ int scheduler_PSJF(Process *proc, int N_procs){
 				proc[target].exec_time--;		
 			}
 			process_kickout( proc[target].pid );
-			if (proc[target].exec_time == 0){		
+			if (proc[target].exec_time <= 0){		
 				int _return;
 				waitpid(proc[target].pid, &_return, 0);
 				if (WIFEXITED(_return) != 1){

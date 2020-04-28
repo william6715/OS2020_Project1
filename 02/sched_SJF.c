@@ -51,13 +51,13 @@ int scheduler_SJF(Process *proc, int N_procs){
 				++time;
 				proc[target].exec_time--;
 			}
-			finish++;			
 			int _return;
 			waitpid(proc[target].pid, &_return, 0);
 			if (WIFEXITED(_return) != 1){
 				fprintf(stderr, "error: child process terminated inappropriately");
 				return 1;
 			}
+			finish++;	
 		}
 		else{//mean the next is not ok
 			//find the next process ok
