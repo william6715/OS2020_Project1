@@ -7,13 +7,11 @@
 #include "scheduler.h"
 #include "process_control.h"
 
-/* First-in first-out scheduler */
+//First-in first-out scheduler
 int scheduler_FIFO(Process *proc, int N_procs){
-
-    /* cur is the index of the process */
+	//initial
 	int cur = -1;
 	int total_time=0;
-
 	while(1){
 
 		cur += 1;
