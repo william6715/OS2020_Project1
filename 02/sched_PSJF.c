@@ -11,18 +11,6 @@
 #include "process_controler.h"
 
 
-int find_shortest(Process *proc, int N_procs, int time){
-	int shortest = -1;
-	int min_time = INT_MAX;
-	for (int i = 0; i < N_procs; i++){
-		if (proc[i].ready_time <= time && proc[i].exec_time && proc[i].exec_time < min_time){
-			min_time = proc[i].exec_time;
-			shortest = i;
-		}
-	}
-	return shortest;
-}
-
 /* Preemptive shortest job first scheduler */
 int scheduler_PSJF(Process *proc, int N_procs){
 	int time = 0, last_turn = -1;;
