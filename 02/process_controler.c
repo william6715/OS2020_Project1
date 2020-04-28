@@ -102,3 +102,14 @@ int process_resume(pid_t pid){
     }
     return 0;
 }
+
+// make to the hightest
+int process_highest(pid_t pid){
+    struct sched_param param;
+    param.sched_priority = sched_get_priority_max(SCHED_FIFO);
+    if ( sched_setscheduler(pid, SCHED_FIFO, &param) < 0 ){
+        perror("error: sched_setscheduler can't highest");
+        return -1;
+    }
+    return 0;
+}

@@ -24,52 +24,36 @@ int find_shortest(Process *proc, int N_procs, int time){
 int scheduler_SJF(Process *proc, int N_procs){
 	int finish = 0;
 	int time = 0;
-    /* keep looping if there are still unfinished processes */
 	while (finish < N_procs){
-        /* target = the index of the shortest job that is able to run 
-           right now */
 		int target = find_shortest(proc, N_procs, time);
-		
-        /* if such a target exists */
+		//mean still have process need run
 		if (target != -1){
-            /* create process for the shortest job */
 			pid_t chpid = process_create(proc[target]);
-            /* raise its priority group */
-			process_resume( chpid );
-            /* set its process id */
 			proc[target].pid = chpid;
-
-            /* this while loop runs the child process
-               until its execution time reaches 0 */
+			process_resume( chpid );
+			//run
 			while (proc[target].exec_time > 0){
-				// tell child process to run 1 time unit
-				char tmp[5] = "run";
-				write(proc[target].pipe_fd[1], tmp, strlen(tmp));
-				
+				write(proc[cur].pipe_fd[1], "run", strlen("run"));
 				TIME_UNIT();
-				time++;
+				++time;
 				proc[target].exec_time--;
 			}
-
-            /* increment number of finished processes */
 			finish++;			
-			// wait child process
 			int _return;
 			waitpid(proc[target].pid, &_return, 0);
-			
 			if (WIFEXITED(_return) != 1){
 				fprintf(stderr, "error: child process terminated inappropriately");
 				return 1;
 			}
 		}
-
-        /* control reaches this point if there isn't 
-           any process able to run right now */
 		else{
-            /* run for a time unit */
+			//find the next process ok
 			TIME_UNIT();
-            /* increment time */
 			time++;
+			//while( proc[cur].ready_time > time ){
+			//	TIME_UNIT();
+			//	time += 1;
+			//}
 		}
 	}
 	return 0;

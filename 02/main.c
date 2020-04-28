@@ -26,8 +26,10 @@ int main(){
 
     // assign the main process to cpu 2 
 	// my virtual box have 4 cpu
+	// and put schedule process to high priority
 	assign_core(getpid(), SCHED_CORE);
-	
+	process_highest(getpid());
+
 	if(sched[0] == 'F') scheduler_FIFO(process, N);
 	else if(sched[0] == 'R') scheduler_RR(process, N);
 	else if(sched[0] == 'S') scheduler_SJF(process, N);

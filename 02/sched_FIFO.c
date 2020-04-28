@@ -20,19 +20,20 @@ int scheduler_FIFO(Process *proc, int N_procs){
 			TIME_UNIT();
 			time += 1;
 		}
-
 		pid_t chpid = process_create(proc[cur]);
+		proc[cur].pid = chpid;
 		process_resume( chpid );
+		//run
 		while( proc[cur].exec_time > 0 ){
 			write(proc[cur].pipe_fd[1], "run", strlen("run"));
 			TIME_UNIT();
-			time += 1;
+			++time;
 			proc[cur].exec_time -= 1;
 		}
 		//waitpid
-		int re_status;
-		waitpid(chpid, &re_status, 0);
-		if( !(WIFEXITED(re_status)) ){
+		int _return;
+		waitpid(chpid, &_return, 0);
+		if( !(WIFEXITED(_return)) ){
 			perror("error: child process terminated inappropriately");
 			return 1;
 		}
