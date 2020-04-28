@@ -60,7 +60,7 @@ int scheduler_PSJF(Process *proc, int N_procs){
 					write(proc[target].pipe_fd[1], "run", strlen("run"));
 					TIME_UNIT();
 					++time;
-					proc[cur].exec_time --;
+					proc[target].exec_time --;
 				}
 			}
 			process_kickout( proc[target].pid );
