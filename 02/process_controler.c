@@ -26,17 +26,15 @@ void inline TIME_UNIT(void){
 int assign_core(pid_t pid, int core){
     cpu_set_t cpu_mask;
     if (core > sizeof(cpu_mask)){
-        fprintf(stderr, "Invalid Core No.: %d\n", core);
+        fprintf(stderr, "Core Number %d is bigger than the number of core %d you have\n", core, sizeof(cpu_mask));
         return -1;
     }
     CPU_ZERO(&cpu_mask);
     CPU_SET(core, &cpu_mask);
-
     if ( sched_setaffinity(pid, sizeof(cpu_mask), &cpu_mask) != 0 ){
-        perror("error: sched_setaffinity");
+        perror("error: sched_setaffinity can't fit CPU");
         exit(-1);
     }
-
     return 0;
 }
 
@@ -66,22 +64,25 @@ pid_t process_create(Process chld){
         end = syscall(SYS_GETTIME);
         syscall(SYS_PRINT, getpid() , start, end);
         exit(0);
+        return -1;
     }
-    //parent will do init, child will do in final
-    process_kickout(chpid);
-    assign_core(chpid, CHILD_CORE);
-    close( chld.pipe_fd[0] );
-    return chpid;
+    //parent will do kill it out first
+    else{
+        process_kickout(chpid);
+        assign_core(chpid, CHILD_CORE);
+        close( chld.pipe_fd[0] );
+        return chpid;
+    }
 }
 
 // set pid to lower priority 
 int process_kickout(pid_t pid){
     struct sched_param param;
-    // normal policy only can use 0
+    // normal policy only can only use 0
     param.sched_priority = 0;
     // set process to the very low priority (IDLE)
     if ( sched_setscheduler(pid, SCHED_IDLE, &param) < 0 ){
-        perror("error: sched_setscheduler");
+        perror("error: sched_setscheduler can't idle");
         return -1;
     }
     return 0;
@@ -96,7 +97,7 @@ int process_resume(pid_t pid){
     //RR time sharing
     //if ( sched_setscheduler(pid, SCHED_OTHER, &param) < 0 ){
     if ( sched_setscheduler(pid, SCHED_FIFO, &param) < 0 ){
-        perror("error: sched_setscheduler");
+        perror("error: sched_setscheduler can't max");
         return -1;
     }
     return 0;

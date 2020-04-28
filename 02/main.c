@@ -28,10 +28,10 @@ int main(){
 	// my virtual box have 4 cpu
 	assign_core(getpid(), SCHED_CORE);
 	
-	if(strcmp(sched, "FIFO") == 0) scheduler_FIFO(process, N);
-	else if(strcmp(sched, "RR") == 0) scheduler_RR(process, N);
-	else if(strcmp(sched, "SJF") == 0) scheduler_SJF(process, N);
-	else if(strcmp(sched, "PSJF") == 0) scheduler_PSJF(process, N);
+	if(sched[0] == 'F') scheduler_FIFO(process, N);
+	else if(sched[0] == 'R') scheduler_RR(process, N);
+	else if(sched[0] == 'S') scheduler_SJF(process, N);
+	else if(sched[0] == 'P') scheduler_PSJF(process, N);
 	else printf("No Such scheduler method.\n");
 	return 0;
 }
