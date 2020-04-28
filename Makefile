@@ -7,7 +7,7 @@ all:
 	gcc $(CFLAG) sched/SJF.c -c
 	gcc $(CFLAG) sched/PSJF.c -c
 	gcc $(CFLAG) process_controler.c -c
-	gcc main.o sched_FIFO.o sched_RR.o sched_SJF.o sched_PSJF.o process_controler.o -o 2020OS_Project_1
+	gcc main.o FIFO.o RR.o SJF.o PSJF.o process_controler.o -o 2020OS_Project_1
 
 clean:
 	rm -f *.o 2020OS_Project_1
