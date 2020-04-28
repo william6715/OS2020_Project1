@@ -9,6 +9,19 @@
 
 #include "process_controler.h"
 
+
+int find_next(Process *proc, int N_procs){
+	int next = -1;
+	int nexttime = INT_MAX;
+	for (int i = 0; i < N_procs; i++){
+		if (proc[i].exec_time && proc[i].ready_time < nexttime){
+			nexttime = proc[i].ready_time;
+			next = i;
+		}
+	}
+	return next;
+}
+
 int find_shortest(Process *proc, int N_procs, int time){
 	int shortest = -1;
 	int min_time = INT_MAX;
@@ -24,10 +37,9 @@ int find_shortest(Process *proc, int N_procs, int time){
 int scheduler_SJF(Process *proc, int N_procs){
 	int finish = 0;
 	int time = 0;
-	while (finish < N_procs){
+	while (finish < N_procs){//mean still have process need run
 		int target = find_shortest(proc, N_procs, time);
-		//mean still have process need run
-		if (target != -1){
+		if (target != -1){//mean next is ok
 			pid_t chpid = process_create(proc[target]);
 			proc[target].pid = chpid;
 			process_resume( chpid );
@@ -46,14 +58,13 @@ int scheduler_SJF(Process *proc, int N_procs){
 				return 1;
 			}
 		}
-		else{
+		else{//mean the next is not ok
 			//find the next process ok
-			TIME_UNIT();
-			time++;
-			//while( proc[cur].ready_time > time ){
-			//	TIME_UNIT();
-			//	time += 1;
-			//}
+			int next = find_next(proc, N_procs);
+			while( proc[next].ready_time > time ){
+				TIME_UNIT();
+				time += 1;
+			}
 		}
 	}
 	return 0;
