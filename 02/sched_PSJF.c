@@ -11,11 +11,11 @@
 #include "process_controler.h"
 
 
-int find_next_without_target(Process *proc, int N_procs, int target){
+int find_next_without_target(Process *proc, int N_procs, int* started){
 	int next = -1;
 	int nexttime = INT_MAX;
 	for (int i = 0; i < N_procs; i++){
-		if (proc[i].exec_time && (proc[i].ready_time < nexttime) && (i != target)){
+		if (proc[i].exec_time && (proc[i].ready_time < nexttime) && (started[i] == 0)){
 			nexttime = proc[i].ready_time;
 			next = i;
 		}
@@ -31,7 +31,6 @@ int scheduler_PSJF(Process *proc, int N_procs){
     for(int i = 0; i<N_procs; ++i) started[i] = 0;
 	while (finish < N_procs){
 		int target = find_shortest(proc, N_procs, time);
-		fprintf(stderr,"target %d\n",target);
 		if (target != -1){
 			if (started[target] == 0){//first time to it
 				pid_t chpid = process_create(proc[target]);
@@ -44,11 +43,6 @@ int scheduler_PSJF(Process *proc, int N_procs){
 			}
 			//find next start time
 			int next = find_next_without_target(proc, N_procs, target);
-			fprintf(stderr,"next %d time %d\n",next,time);
-			if(next == target){
-				fprintf(stderr, "error: equal");
-				break;
-			}
 			//do target until next process ready
 			if(next!=-1){
 				while(proc[next].ready_time > time){
@@ -81,7 +75,6 @@ int scheduler_PSJF(Process *proc, int N_procs){
 		else{//mean the next is not ok
 			//find the next process ok
 			int next = find_next(proc, N_procs);
-			fprintf(stderr,"next %d\n",next);
 			while( proc[next].ready_time > time ){
 				TIME_UNIT();
 				time += 1;
