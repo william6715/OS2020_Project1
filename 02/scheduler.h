@@ -13,5 +13,6 @@ int scheduler_SJF(Process *proc, int N_procs);
 int scheduler_PSJF(Process *proc, int N_procs);
 
 int find_shortest(Process *proc, int N_procs, int time);
-
+int find_next(Process *proc, int N_procs);
+int find_next_without_target(Process *proc, int N_procs, int target);
 #endif
