@@ -44,7 +44,7 @@ int scheduler_PSJF(Process *proc, int N_procs){
 			}
 			//find next start time
 			int next = find_next_without_target(proc, N_procs, target);
-			fprintf(stderr,"next %d\n",next);
+			fprintf(stderr,"next %d time %d\n",next,time);
 			if(next == target){
 				fprintf(stderr, "error: equal");
 				break;
