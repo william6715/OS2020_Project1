@@ -69,7 +69,7 @@ int scheduler_PSJF(Process *proc, int N_procs){
 				}
 				finish++;
 			}
-			process_kickout( proc[target].pid );
+			else process_kickout( proc[target].pid );
 		}		
 		else{//mean the next is not ok
 			//find the next process ok

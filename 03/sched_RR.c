@@ -52,7 +52,7 @@ int scheduler_RR(Process *proc, int N_procs){
 				}
 				finish ++;
 			}
-			process_kickout( proc[i].pid );	
+			else process_kickout( proc[i].pid );	
 		} 
 		if( finish >= N_procs ) break;
 		//all can't do, and at least one can do, but not come
