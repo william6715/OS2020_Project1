@@ -8,7 +8,7 @@
 #include <sys/syscall.h>
 
 #include "../scheduler.h"
-#include "process_controler.h"
+#include "../process_controler.h"
 
 
 int find_next(Process *proc, int N_procs){

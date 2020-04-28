@@ -5,7 +5,7 @@
 #include <sys/wait.h>
 
 #include "../scheduler.h"
-#include "process_controler.h"
+#include "../process_controler.h"
 
 //First-in first-out scheduler
 int scheduler_FIFO(Process *proc, int N_procs){
