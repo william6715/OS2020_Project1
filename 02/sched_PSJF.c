@@ -42,7 +42,7 @@ int scheduler_PSJF(Process *proc, int N_procs){
 				process_resume( proc[target].pid );
 			}
 			//find next start time
-			int next = find_next_without_target(proc, N_procs, started);
+			int next = find_next_without_target(proc, N_procs, started,time);
 			//do target until next process ready
 			if(next!=-1){
 				while(proc[next].ready_time > time){
