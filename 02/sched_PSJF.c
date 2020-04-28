@@ -31,6 +31,7 @@ int scheduler_PSJF(Process *proc, int N_procs){
     for(int i = 0; i<N_procs; ++i) started[i] = 0;
 	while (finish < N_procs){
 		int target = find_shortest(proc, N_procs, time);
+		fprintf(stderr,"target %d\n",target);
 		if (target != -1){
 			if (started[target] == 0){//first time to it
 				pid_t chpid = process_create(proc[target]);
@@ -43,13 +44,24 @@ int scheduler_PSJF(Process *proc, int N_procs){
 			}
 			//find next start time
 			int next = find_next_without_target(proc, N_procs, target);
+			fprintf(stderr,"next %d\n",next);
 			//do target until next process ready
-			while(proc[next].ready_time > time){
-				if(proc[target].exec_time == 0)break;
-				write(proc[target].pipe_fd[1], "run", strlen("run"));
-				TIME_UNIT();
-				++time;
-				proc[target].exec_time--;		
+			if(next!=-1){
+				while(proc[next].ready_time > time){
+					if(proc[target].exec_time <= 0)break;
+					write(proc[target].pipe_fd[1], "run", strlen("run"));
+					TIME_UNIT();
+					++time;
+					proc[target].exec_time--;		
+				}
+			}
+			else{
+				while( proc[target].exec_time > 0 ){
+					write(proc[target].pipe_fd[1], "run", strlen("run"));
+					TIME_UNIT();
+					++time;
+					proc[cur].exec_time --;
+				}
 			}
 			process_kickout( proc[target].pid );
 			if (proc[target].exec_time <= 0){		
@@ -65,6 +77,7 @@ int scheduler_PSJF(Process *proc, int N_procs){
 		else{//mean the next is not ok
 			//find the next process ok
 			int next = find_next(proc, N_procs);
+			fprintf(stderr,"next %d\n",next);
 			while( proc[next].ready_time > time ){
 				TIME_UNIT();
 				time += 1;

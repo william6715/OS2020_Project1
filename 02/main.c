@@ -36,4 +36,5 @@ int main(){
 	else if(sched[0] == 'P') scheduler_PSJF(process, N);
 	else printf("No Such scheduler method.\n");
 	return 0;
+	
 }
