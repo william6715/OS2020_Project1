@@ -11,11 +11,11 @@
 #include "process_controler.h"
 
 
-int find_next_without_target(Process *proc, int N_procs, int* started){
+int find_next_without_target(Process *proc, int N_procs, int* started,int time){
 	int next = -1;
 	int nexttime = INT_MAX;
 	for (int i = 0; i < N_procs; i++){
-		if (proc[i].exec_time && (proc[i].ready_time < nexttime) && (started[i] == 0)){
+		if (proc[i].exec_time && (proc[i].ready_time < nexttime) && (started[i] == 0) && proc[i].ready_time>time){
 			nexttime = proc[i].ready_time;
 			next = i;
 		}
