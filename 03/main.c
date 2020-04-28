@@ -35,6 +35,12 @@ int main(){
 	else if(sched[0] == 'S') scheduler_SJF(process, N);
 	else if(sched[0] == 'P') scheduler_PSJF(process, N);
 	else printf("No Such scheduler method.\n");
+	//make back to idle
+	struct sched_param param;
+    param.sched_priority = 0;
+    if ( sched_setscheduler(pid, SCHED_OTHER, &param) < 0 ){
+        perror("error: sched_setscheduler can't get back");
+        return -1;
+    }
 	return 0;
-	
 }
