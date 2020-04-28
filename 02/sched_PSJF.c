@@ -15,7 +15,7 @@ int find_next_without_target(Process *proc, int N_procs, int target){
 	int next = -1;
 	int nexttime = INT_MAX;
 	for (int i = 0; i < N_procs; i++){
-		if (proc[i].exec_time && proc[i].ready_time < nexttime && (i != target)){
+		if (proc[i].exec_time && (proc[i].ready_time < nexttime) && (i != target)){
 			nexttime = proc[i].ready_time;
 			next = i;
 		}
@@ -45,6 +45,10 @@ int scheduler_PSJF(Process *proc, int N_procs){
 			//find next start time
 			int next = find_next_without_target(proc, N_procs, target);
 			fprintf(stderr,"next %d\n",next);
+			if(next == target){
+				fprintf(stderr, "error: equal");
+				break;
+			}
 			//do target until next process ready
 			if(next!=-1){
 				while(proc[next].ready_time > time){
