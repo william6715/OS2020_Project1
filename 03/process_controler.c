@@ -50,9 +50,9 @@ pid_t process_create(Process chld){
         close( chld.pipe_fd[1] );
         int init_exec_time = chld.exec_time;
         long start, end;
+        read(chld.pipe_fd[0], buf, strlen("run"));
         while( chld.exec_time > 0 ){
             char buf[8];
-            read(chld.pipe_fd[0], buf, strlen("run"));
             //mean the first time fork
             if( chld.exec_time == init_exec_time ){
                 start = syscall(SYS_GETTIME);

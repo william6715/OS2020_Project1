@@ -22,10 +22,10 @@ int scheduler_FIFO(Process *proc, int N_procs){
 		}
 		pid_t chpid = process_create(proc[cur]);
 		proc[cur].pid = chpid;
-		process_resume( chpid );
+		write(proc[cur].pipe_fd[1], "run", strlen("run"));
 		//run
+		process_resume( chpid );
 		while( proc[cur].exec_time > 0 ){
-			write(proc[cur].pipe_fd[1], "run", strlen("run"));
 			TIME_UNIT();
 			++time;
 			proc[cur].exec_time -= 1;

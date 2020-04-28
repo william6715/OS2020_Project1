@@ -32,18 +32,17 @@ int scheduler_RR(Process *proc, int N_procs){
 			}
 			else{ 
 				proc[i].pid = process_create( proc[i] );
+				write(proc[i].pipe_fd[1], "run", strlen("run"));
 				process_resume( proc[i].pid );
 			}
 			// i can do, then do it, until it can't do
 			int kt = RR_SLICE; 
 			while( proc[i].exec_time > 0 && kt > 0){
-				write(proc[i].pipe_fd[1], "run", strlen("run"));
 				TIME_UNIT(); 
 				proc[i].exec_time --;
 				time ++;
 				kt --;
 			}
-			process_kickout( proc[i].pid );	
 			if(proc[i].exec_time <= 0){
 				int _return;
 				waitpid(proc[i].pid, &_return, 0);
@@ -53,6 +52,7 @@ int scheduler_RR(Process *proc, int N_procs){
 				}
 				finish ++;
 			}
+			process_kickout( proc[i].pid );	
 		} 
 		if( finish >= N_procs ) break;
 		//all can't do, and at least one can do, but not come

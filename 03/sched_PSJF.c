@@ -35,6 +35,7 @@ int scheduler_PSJF(Process *proc, int N_procs){
 			if (started[target] == 0){//first time to it
 				pid_t chpid = process_create(proc[target]);
 				proc[target].pid = chpid;
+				write(proc[target].pipe_fd[1], "run", strlen("run"));
 				process_resume( chpid );
 				started[target] = 1;
 			}
@@ -47,7 +48,6 @@ int scheduler_PSJF(Process *proc, int N_procs){
 			if(next!=-1){
 				while(proc[next].ready_time > time){
 					if(proc[target].exec_time <= 0)break;
-					write(proc[target].pipe_fd[1], "run", strlen("run"));
 					TIME_UNIT();
 					++time;
 					proc[target].exec_time--;		
@@ -55,13 +55,11 @@ int scheduler_PSJF(Process *proc, int N_procs){
 			}
 			else{
 				while( proc[target].exec_time > 0 ){
-					write(proc[target].pipe_fd[1], "run", strlen("run"));
 					TIME_UNIT();
 					++time;
 					proc[target].exec_time --;
 				}
 			}
-			process_kickout( proc[target].pid );
 			if (proc[target].exec_time <= 0){		
 				int _return;
 				waitpid(proc[target].pid, &_return, 0);
@@ -71,6 +69,7 @@ int scheduler_PSJF(Process *proc, int N_procs){
 				}
 				finish++;
 			}
+			process_kickout( proc[target].pid );
 		}		
 		else{//mean the next is not ok
 			//find the next process ok

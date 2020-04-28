@@ -43,10 +43,10 @@ int scheduler_SJF(Process *proc, int N_procs){
 		if (target != -1){//mean next is ok
 			pid_t chpid = process_create(proc[target]);
 			proc[target].pid = chpid;
-			process_resume( chpid );
+			write(proc[target].pipe_fd[1], "run", strlen("run"));
 			//run
+			process_resume( chpid );
 			while (proc[target].exec_time > 0){
-				write(proc[target].pipe_fd[1], "run", strlen("run"));
 				TIME_UNIT();
 				++time;
 				proc[target].exec_time--;
