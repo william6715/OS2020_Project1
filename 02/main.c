@@ -40,7 +40,7 @@ int main(){
 	//make back to idle
 	struct sched_param param;
     param.sched_priority = 0;
-    if ( sched_setscheduler(pid, SCHED_OTHER, &param) < 0 ){
+    if ( sched_setscheduler(getpid(), SCHED_OTHER, &param) < 0 ){
         perror("error: sched_setscheduler can't get back");
         return -1;
     }
