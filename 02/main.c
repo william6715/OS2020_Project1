@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <sched.h>
 
 #include "scheduler.h"
 #include "process_controler.h"
