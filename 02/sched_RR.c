@@ -7,7 +7,7 @@
 #include <string.h>
 
 #include "scheduler.h"
-#include "process_control.h"
+#include "process_controler.h"
 
 /* Round-robin scheduler */
 int scheduler_RR(Process *proc, int N_procs){

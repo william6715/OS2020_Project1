@@ -1,7 +1,7 @@
 #ifndef _SCHEDULER_H_
 #define _SCHEDULER_H_
 
-#include "process_control.h"
+#include "process_controler.h"
 #define RR_SLICE 500
 
 #define SCHED_CORE 2

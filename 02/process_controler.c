@@ -10,7 +10,7 @@
 #include <sys/types.h>
 #include <sys/syscall.h>
 
-#include "process_control.h"
+#include "process_controler.h"
 #include "scheduler.h"
 
 #define SYS_GETTIME 333

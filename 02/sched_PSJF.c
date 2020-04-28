@@ -7,7 +7,7 @@
 #include <sys/wait.h>
 #include <sys/syscall.h>
 
-#include "process_control.h"
+#include "process_controler.h"
 
 /* preemptive version of the find shortest function
    it's actually the same function, but it is used

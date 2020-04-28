@@ -7,7 +7,7 @@
 #include <sys/wait.h>
 #include <sys/syscall.h>
 
-#include "process_control.h"
+#include "process_controler.h"
 
 /*  */
 int find_shortest(Process *proc, int N_procs, int time){
