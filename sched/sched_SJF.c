@@ -7,7 +7,7 @@
 #include <sys/wait.h>
 #include <sys/syscall.h>
 
-#include "scheduler.h"
+#include "../scheduler.h"
 #include "process_controler.h"
 
 

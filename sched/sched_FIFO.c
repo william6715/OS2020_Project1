@@ -4,7 +4,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include "scheduler.h"
+#include "../scheduler.h"
 #include "process_controler.h"
 
 //First-in first-out scheduler

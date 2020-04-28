@@ -6,7 +6,7 @@
 #include <limits.h>
 #include <string.h>
 
-#include "scheduler.h"
+#include "../scheduler.h"
 #include "process_controler.h"
 
 //RR_SLICE 500
