@@ -32,7 +32,7 @@ int scheduler_PSJF(Process *proc, int N_procs){
 			if (proc[target].pid < 0){//first time to it
 				pid_t chpid = process_create(proc[target]);
 				proc[target].pid = chpid;
-				process_resume( chpid );
+				process_resume( proc[target].pid );
 			}
 			else {//resume to it				
 				process_resume( proc[target].pid );

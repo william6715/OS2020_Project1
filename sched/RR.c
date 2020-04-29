@@ -35,13 +35,13 @@ int scheduler_RR(Process *proc, int N_procs){
 				process_resume( proc[j].pid );
 			}
 			// j can do, then do it, until it can't do
-			int kt = RR_SLICE; 
-			while( proc[j].exec_time > 0 && kt > 0){
+			int cycle = RR_SLICE; 
+			while( proc[j].exec_time > 0 && cycle > 0){
 				write(proc[j].pipe_fd[1], "run", strlen("run"));
 				TIME_UNIT(); 
 				proc[j].exec_time --;
 				time ++;
-				kt --;
+				cycle --;
 			}
 			if(proc[j].exec_time <= 0){
 				int _return;
