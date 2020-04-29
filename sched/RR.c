@@ -10,9 +10,8 @@
 #include "../process_controler.h"
 
 //RR_SLICE 500
-
-int queue_size = 256;
-int queue[queue_size];
+#define QUEUE_SIZE 256
+int queue[QUEUE_SIZE];
 int head = 0;
 int tail = 0;
 //0 mean not in yet
@@ -21,15 +20,15 @@ int first_time_in_queue[30];
 void putin(int target){
 	queue[tail] = target;
 	first_time_in_queue[target] = 1;
-	++taill;
-	if(tail >= queue_size) tail -= queue_size;
+	++tail;
+	if(tail >= QUEUE_SIZE) tail -= QUEUE_SIZE;
 }
 int getnext(){
 	int target = -1;
 	if(tail != head){
 		target = queue[head];
 		head++;
-		if(head >= queue_size) head -= queue_size;
+		if(head >= QUEUE_SIZE) head -= QUEUE_SIZE;
 		return target;
 	}
 	else return target;
