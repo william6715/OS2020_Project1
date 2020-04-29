@@ -12,3 +12,10 @@
 
 ## III. Important
 * I use 4 core CPU, for this project, you need at least 4 CPU
+
+## IV. Usage
+```sh
+go to  dir OS2020_Project1
+make
+sudo ./2020OS_Project_1 < intput_data > output_data
+```
