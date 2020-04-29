@@ -25,8 +25,8 @@ int find_next_without_target(Process *proc, int N_procs, int* started,int time){
 
 /* Preemptive shortest job first scheduler */
 int scheduler_PSJF(Process *proc, int N_procs){
-	int time = 0;
 	int finish = 0;
+	int time = 0;
 	int started[N_procs];
     for(int i = 0; i<N_procs; ++i) started[i] = 0;
 	while (finish < N_procs){
@@ -61,7 +61,6 @@ int scheduler_PSJF(Process *proc, int N_procs){
 					proc[target].exec_time --;
 				}
 			}
-			process_kickout( proc[target].pid );
 			if (proc[target].exec_time <= 0){		
 				int _return;
 				waitpid(proc[target].pid, &_return, 0);
@@ -70,6 +69,9 @@ int scheduler_PSJF(Process *proc, int N_procs){
 					return 1;
 				}
 				finish++;
+			}
+			else{
+				process_kickout( proc[target].pid );
 			}
 		}		
 		else{//mean the next is not ok

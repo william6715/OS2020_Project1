@@ -14,7 +14,7 @@ int main(){
 	scanf("%s", sched);
 	scanf("%d", &N);
 	Process* process = malloc(N * sizeof(Process));
-	//it will be sort by ready time already
+	//"it will be sort by ready time already", Ta said
 	for(int i = 0 ; i < N ; i++){
 		//initial 
 		scanf("%s %d %d", process[i].name, &(process[i].ready_time), &(process[i].exec_time));

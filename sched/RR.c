@@ -17,41 +17,43 @@ int scheduler_RR(Process *proc, int N_procs){
 	while(1){
 		int nt = 0; 
 		//always run
-		for(int i=0; i<N_procs; i++){
-			if( time < proc[i].ready_time ){
+		for(int j=0; j<N_procs; j++){
+			if( time < proc[j].ready_time ){
 				nt ++;
 				continue;
 			}
-			else if( proc[i].exec_time <= 0 ){
+			else if( proc[j].exec_time <= 0 ){
 				nt ++;
 				continue;
 			} 
 			//if process can do will go here
-			if( proc[i].pid > 0 ){
-				process_resume( proc[i].pid );
+			if( proc[j].pid > 0 ){
+				process_resume( proc[j].pid );
 			}
 			else{ 
-				proc[i].pid = process_create( proc[i] );
-				process_resume( proc[i].pid );
+				proc[j].pid = process_create( proc[j] );
+				process_resume( proc[j].pid );
 			}
-			// i can do, then do it, until it can't do
+			// j can do, then do it, until it can't do
 			int kt = RR_SLICE; 
-			while( proc[i].exec_time > 0 && kt > 0){
-				write(proc[i].pipe_fd[1], "run", strlen("run"));
+			while( proc[j].exec_time > 0 && kt > 0){
+				write(proc[j].pipe_fd[1], "run", strlen("run"));
 				TIME_UNIT(); 
-				proc[i].exec_time --;
+				proc[j].exec_time --;
 				time ++;
 				kt --;
 			}
-			process_kickout( proc[i].pid );	
-			if(proc[i].exec_time <= 0){
+			if(proc[j].exec_time <= 0){
 				int _return;
-				waitpid(proc[i].pid, &_return, 0);
+				waitpid(proc[j].pid, &_return, 0);
 				if( !(WIFEXITED(_return)) ){
 					perror("error: child process terminated inappropriately");
 					return 1;
 				}
 				finish ++;
+			}
+			else{
+				process_kickout( proc[j].pid );	
 			}
 		} 
 		if( finish >= N_procs ) break;
