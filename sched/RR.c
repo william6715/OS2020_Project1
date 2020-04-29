@@ -1,10 +1,10 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 #include <limits.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #include "../scheduler.h"
 #include "../process_controler.h"
@@ -15,15 +15,15 @@ int scheduler_RR(Process *proc, int N_procs){
 	int finish = 0; 
 	int time = 0; 
 	while(1){
-		int nt = 0; 
+		int not_ok = 0; 
 		//always run
 		for(int j=0; j<N_procs; j++){
 			if( time < proc[j].ready_time ){
-				nt ++;
+				not_ok ++;
 				continue;
 			}
 			else if( proc[j].exec_time <= 0 ){
-				nt ++;
+				not_ok ++;
 				continue;
 			} 
 			//if process can do will go here
@@ -58,7 +58,7 @@ int scheduler_RR(Process *proc, int N_procs){
 		} 
 		if( finish >= N_procs ) break;
 		//all can't do, and at least one can do, but not come
-		if( nt >= N_procs){ 			
+		if( not_ok >= N_procs){ 			
 			int next = find_next(proc, N_procs);
 			while( proc[next].ready_time > time ){
 				TIME_UNIT();

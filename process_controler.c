@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sched.h>
-#include <time.h>
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/syscall.h>
@@ -92,9 +91,7 @@ int process_kickout(pid_t pid){
 // or set to real policy
 int process_resume(pid_t pid){
     struct sched_param param;
-    //param.sched_priority = 0;
     param.sched_priority = sched_get_priority_max(SCHED_FIFO);
-    //RR time sharing
     //if ( sched_setscheduler(pid, SCHED_OTHER, &param) < 0 ){
     if ( sched_setscheduler(pid, SCHED_FIFO, &param) < 0 ){
         perror("error: sched_setscheduler can't max");

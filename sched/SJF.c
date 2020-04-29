@@ -5,7 +5,6 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <sys/syscall.h>
 
 #include "../scheduler.h"
 #include "../process_controler.h"
@@ -51,6 +50,7 @@ int scheduler_SJF(Process *proc, int N_procs){
 				++time;
 				proc[target].exec_time--;
 			}
+			//waitpid
 			int _return;
 			waitpid(proc[target].pid, &_return, 0);
 			if (WIFEXITED(_return) != 1){
